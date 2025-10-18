@@ -5,7 +5,7 @@
 
 using namespace std;
 
-string placas[10] = {""}, modelo[10] = {""}, statusOS[10] =  {""};
+string placas[10] = {""}, modelos[10] = {""}, statusOS[10] =  {""};
 int ano[10] = {0}, quantidade = 0;
 
 void Menu(){
@@ -20,20 +20,23 @@ void Menu(){
 }
 
 void Cadastrar(){
-	for(int i = 0; i < 100; i++){
-		if(placas[i] == "" && modelo[i] == "" && statusOS[i] == "" && ano[i] == 0){
-			cout<<"\nBem vindo a oficina"<<endl;
+	for(int i = 0; i < 10; i++){
+		if(placas[i] == "" && modelos[i] == "" && statusOS[i] == "" && ano[i] == 0){
+			cout<<"\n---Bem vindo a oficina---"<<endl;
+			
+			cin.ignore();
 			cout<<"\nInforme a placa do Veiculo"<<endl;
 			getline(cin, placas[i]);
 			cout<<"\nInforme o Modelo do veiculo"<<endl;
-			getline(cin, modelo[i]);
+			getline(cin, modelos[i]);
 			cout<<"\nDigite o Ano de fabricação"<<endl;
 			cin>>ano[i];
 			
-			statusOS[quantidade] = "Em andamento";
+			statusOS[i] = "Em andamento";
 			cout<<"\nVeiculo cadastrado com status 'Em andamento'"<<endl;
 			
 			quantidade++;
+			break;
 		}
 	}
 }
@@ -44,9 +47,9 @@ void listarOS(){
 		return;
 	}
 	for(int i = 0; i < quantidade; i++){
-		cout<<"Veiculo "<<(1+1)<<endl;
+		cout<<"\nVeiculo "<<(i + 1)<<endl;
 		cout<<"Placa: "<<placas[i]<<endl;
-		cout<<"Modelo: "<<modelo[i]<<endl;
+		cout<<"Modelo: "<<modelos[i]<<endl;
 		cout<<"Ano: "<<ano[i]<<endl;
 		cout<<"Status OS: "<<statusOS[i]<<endl;
 	}
@@ -59,7 +62,7 @@ void atualizarStatus() {
         cout << "Nenhum veiculo cadastrado.\n";
         return;
     }
-    cout<<"Digite a placa para atualizar: ";
+    cout<<"\nDigite a placa para atualizar: ";
     cin.ignore();
     getline(cin, placa);
 
@@ -70,23 +73,28 @@ void atualizarStatus() {
                 return;
             }
 
-            cout<<"Escolha novo status:\n";
-            cout<<"1 - Concluida\n2 - Cancelada\n";
+            cout<<"\nEscolha novo status:\n";
+            cout<<"\n1 - Concluida\n2 - Cancelada\n";
+            
             int opcao;
             cin>>opcao;
             cin.ignore();
-
-            if (opcao == 1) statusOS[i] = "Concluida";
-		
-            else if (opcao == 2) statusOS[i] = "Cancelada";
-            	cout<<"Opcao invalida.\n";
-            	
-            else(cout<<"Status atualizado.\n");
-            	return;
-        	}
-        }
-    	cout<<"Placa nao encontrada.\n";
+            
+				if (opcao == 1) {
+    				statusOS[i] = "Concluida";
+    				cout << "\nStatus atualizado para 'Concluída'.\n";
+				}else if (opcao == 2) {
+    				statusOS[i] = "Cancelada";
+   				 	cout << "\nStatus atualizado para 'Cancelada'.\n";
+			    }else {
+    				cout << "Opção inválida.\n";
+				}
+					return;
+			}
 }
+
+}
+			
 
 void pesquisarVeiculo() {
     if (quantidade == 0) {
@@ -95,13 +103,13 @@ void pesquisarVeiculo() {
     }
 
     string placa;
-    cout<<"Digite a placa para pesquisar: ";
+    cout<<"\nDigite a placa para pesquisar: ";
     cin.ignore();
     getline(cin,placa);
 
     for (int i = 0; i < quantidade; i++) {
         if (placas[i] == placa) {
-            cout<<"Veiculo encontrado:\n";
+            cout<<"\nVeiculo encontrado:\n";
             cout<<"Placa: "<<placas[i]<<endl;
             cout<<"Modelo: "<<modelos[i]<<endl;
             cout<<"Ano: "<<ano[i]<<endl;
@@ -109,13 +117,13 @@ void pesquisarVeiculo() {
             return;
         }
     }
-    cout<<"Placa nao encontrada.\n";
+    cout<<"\nPlaca nao encontrada.\n";
 }
 
 void totalOSconcluida(){
 	int total = 0;
 		if(quantidade == 0){
-		cout<<"Sem OS Registradas"<<endl;
+		cout<<"\nSem OS Registradas"<<endl;
 		return;
 		}
 		
@@ -123,21 +131,27 @@ void totalOSconcluida(){
 			if(statusOS[i] == "Concluida"){
 					total++;
 			}
-				cout<<"Total de Serviços concluidos: "<<total<<endl;
-		}			
+		}	
+			cout<<"\nTotal de Serviços concluidos: "<<total<<endl;		
 }
 
-void totalOSandamento(){
-	bool tem = false;
-	for (int i = 0; i < quantidade; i++) {
+void totalOSandamento() {
+    bool tem = false;
+    cout << "\n--- ORDENS DE SERVIÇO EM ANDAMENTO ---\n";
+
+    for (int i = 0; i < quantidade; i++) {
         if (statusOS[i] == "Em andamento") {
-            cout<<"Placa: "<<placas[i]<<endl;
-			cout<<"Modelo: "<<modelos[i]<<endl;
-			cout<<"Ano: "<<ano[i]<<endl;
+            cout << "\nOS Nº " << (i + 1) << endl;
+            cout << "Placa: " << placas[i] << endl;
+            cout << "Modelo: " << modelos[i] << endl;
+            cout << "Ano: " << ano[i] << endl;
+            cout << "Status: " << statusOS[i] << endl;
             tem = true;
         }
     }
-    if(!tem) cout<<"Nenhuma ordem em andamento"<<endl;
+
+    if (!tem)
+        cout << "\nNenhuma ordem em andamento.\n";
 }
 
 
@@ -162,7 +176,7 @@ int main(){
 					listarOS();
 					break;
 				case 3:
-					atualizarstatus();
+					atualizarStatus();
 					break;
 				case 4:
 					pesquisarVeiculo();
@@ -174,7 +188,7 @@ int main(){
 					totalOSandamento();		
 					break;
 				case 7:
-					cout<<"Saindo do Sistema.."<<endl;
+					cout<<"\nSaindo do Sistema.."<<endl;
 					break;		
 			}
 		
