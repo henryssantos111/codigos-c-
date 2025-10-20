@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oficina Rodobens</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f2f5ff;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background: #004aad;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.8em;
+    letter-spacing: 1px;
+  }
+  main {
+    max-width: 850px;
+    background: white;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+  button {
+    background: #004aad;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 8px;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #003580;
+    transform: scale(1.05);
+  }
+  .output {
+    background: #eef4ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    white-space: pre-wrap;
+    border: 1px solid #c5d4ff;
+    font-family: "Consolas", monospace;
+  }
+</style>
+</head>
+<body>
+
+<header>🚗 Oficina Rodobens</header>
+
+<main>
+  <h2>Menu Principal</h2>
+  <button onclick="cadastrar()">1 - Cadastrar Veículo / Nova OS</button>
+  <button onclick="listar()">2 - Listar Ordens de Serviço</button>
+  <button onclick="atualizar()">3 - Atualizar Status da OS</button>
+  <button onclick="pesquisar()">4 - Pesquisar Veículo por Placa</button>
+  <button onclick="totalConcluidas()">5 - Total de Serviços Concluídos</button>
+  <button onclick="emAndamento()">6 - OS em Andamento</button>
+
+  <div class="output" id="saida">Bem-vindo à Oficina Rodobens! 👋</div>
+</main>
+
+<script>
+let oficina = [];
+
+function cadastrar() {
+  const placa = prompt("Informe a PLACA do veículo:");
+  if (!placa) return alert("Placa não informada.");
+
+  const modelo = prompt("Informe o MODELO do veículo:");
+  if (!modelo) return alert("Modelo não informado.");
+
+  const ano = prompt("Informe o ANO de fabricação:");
+  if (!ano || isNaN(ano)) return alert("Ano inválido.");
+
+  oficina.push({ placa, modelo, ano, status: "Em andamento" });
+  document.getElementById("saida").textContent =
+    `Veículo ${modelo} (${placa}) cadastrado com status 'Em andamento'. ✅`;
+}
+
+function listar() {
+  if (oficina.length === 0) {
+    document.getElementById("saida").textContent = "⚠️ Nenhuma OS registrada.";
+    return;
+  }
+
+  let texto = "--- LISTA DE ORDENS DE SERVIÇO ---\n";
+  oficina.forEach((v, i) => {
+    texto += `\n${i + 1}. Placa: ${v.placa}\nModelo: ${v.modelo}\nAno: ${v.ano}\nStatus: ${v.status}\n`;
+  });
+  document.getElementById("saida").textContent = texto;
+}
+
+function atualizar() {
+  if (oficina.length === 0) {
+    document.getElementById("saida").textContent = "Nenhum veículo cadastrado.";
+    return;
+  }
+
+  const placa = prompt("Digite a PLACA para atualizar:");
+  const veiculo = oficina.find(v => v.placa === placa);
+
+  if (!veiculo) {
+    document.getElementById("saida").textContent = "❌ Placa não encontrada.";
+    return;
+  }
+
+  if (veiculo.status !== "Em andamento") {
+    document.getElementById("saida").textContent = "⚠️ Só é possível atualizar OS em andamento.";
+    return;
+  }
+
+  const opcao = prompt("Escolha o novo status:\n1 - Concluída\n2 - Cancelada");
+  if (opcao === "1") veiculo.status = "Concluída";
+  else if (opcao === "2") veiculo.status = "Cancelada";
+  else return alert("Opção inválida.");
+
+  document.getElementById("saida").textContent =
+    `Status da OS (${veiculo.placa}) atualizado para '${veiculo.status}'.`;
+}
+
+function pesquisar() {
+  if (oficina.length === 0) {
+    document.getElementById("saida").textContent = "Nenhum veículo cadastrado.";
+    return;
+  }
+
+  const placa = prompt("Digite a PLACA para pesquisar:");
+  const v = oficina.find(x => x.placa === placa);
+
+  if (v) {
+    document.getElementById("saida").textContent =
+      `--- VEÍCULO ENCONTRADO ---\nPlaca: ${v.placa}\nModelo: ${v.modelo}\nAno: ${v.ano}\nStatus: ${v.status}`;
+  } else {
+    document.getElementById("saida").textContent = "❌ Veículo não encontrado.";
+  }
+}
+
+function totalConcluidas() {
+  const total = oficina.filter(v => v.status === "Concluída").length;
+  document.getElementById("saida").textContent =
+    `✅ Total de serviços concluídos: ${total}`;
+}
+
+function emAndamento() {
+  const andamento = oficina.filter(v => v.status === "Em andamento");
+  if (andamento.length === 0) {
+    document.getElementById("saida").textContent = "Nenhuma OS em andamento.";
+    return;
+  }
+
+  let texto = "--- ORDENS DE SERVIÇO EM ANDAMENTO ---\n";
+  andamento.forEach((v, i) => {
+    texto += `\n${i + 1}. Placa: ${v.placa}\nModelo: ${v.modelo}\nAno: ${v.ano}\nStatus: ${v.status}\n`;
+  });
+  document.getElementById("saida").textContent = texto;
+}
+</script>
+
+</body>
+</html>
