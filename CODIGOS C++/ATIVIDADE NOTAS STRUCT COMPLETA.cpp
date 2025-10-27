@@ -19,8 +19,6 @@ void menu() {
 	cout<<"2. Gerar Media"<<endl;
 	cout<<"3. Gerar Situacao"<<endl;
 	cout<<"4. Sair"<<endl;
-	//criar uma função para validar se AV1 e AV2 existem cout<<"3. Exibir Situação"<<endl;
-	//criar uma função para validar se a MEDIA exite cout<<"4. Sair"<<endl;
 }
 
 void add() {
@@ -98,4 +96,5 @@ int main() {
 		
 		}while (op != 4);
 	
+
 }
