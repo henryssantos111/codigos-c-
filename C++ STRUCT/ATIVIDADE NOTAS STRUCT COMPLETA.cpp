@@ -16,7 +16,7 @@ int quantidade = 0;
 void menu() {
 	cout<<"Boletin SENAI"<<endl;
 	cout<<"1. Cadastrar"<<endl;
-	cout<<"2. Gerar Media"<<endl;ioii
+	cout<<"2. Gerar Media"<<endl;
 	cout<<"3. Gerar Situacao"<<endl;
 	cout<<"4. Sair"<<endl;
 }
