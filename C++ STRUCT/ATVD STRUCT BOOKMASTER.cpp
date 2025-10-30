@@ -203,7 +203,7 @@ void realizarEmprestimo() {
     cout<<"Data de devolução prevista (dd/mm/aaaa): ";
     cin>>emprestimos[qtdEmprestimos].data_devolucao;
 
-    livros[idxLivro].estoque--; // Atualiza estoque
+    livros[idxLivro].estoque--;
 
     qtdEmprestimos++;
     cout<<"Empréstimo realizado com sucesso!\n";
@@ -306,3 +306,4 @@ int main() {
 
     return 0;
 }
+
