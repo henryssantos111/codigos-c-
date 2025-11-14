@@ -154,15 +154,19 @@ void Realizarvenda(){
 	int opProd;
 	int qtd;
 	
-	if(qtdProduto == 0){
-		cout<<"\nSem Produtos Cadastros!"<<endl;
-	}
-	if(qtdVendedor == 0){
-		cout<<"\nSem Vendedores cadastros!"<<endl;	
-	}
-	if(qtdCliente == 0){
-		cout<<"\nSem Clientes cadastrados!"<<endl;
-	}
+		if(qtdProduto == 0){
+	   		 cout<<"\nSem Produtos Cadastros!"<<endl;
+	    	 return;
+		}
+		if(qtdVendedor == 0){
+	   		 cout<<"\nSem Vendedores cadastros!"<<endl;    
+	    	 return;
+		}
+		if(qtdCliente == 0){
+	    	cout<<"\nSem Clientes cadastrados!"<<endl;
+	    	return;
+		}
+
 		cout<<"\n=== Realizar venda ===\n";
 		cout<<"\nSelecione o Cliente\n";
 		for(int i = 0; i < qtdCliente; i++){
