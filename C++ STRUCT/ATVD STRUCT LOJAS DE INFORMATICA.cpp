@@ -138,7 +138,7 @@ void Cadastrarvendedor(){
 
 void Listarvendedor(){
 	if(qtdVendedor ==0){
-		
+		cout<<"\nSem vendedores cadastrados!"<<endl;
 	}
 	
 	cout<<"\n=== Lista de Vendedores ===\n";
@@ -206,80 +206,101 @@ void Realizarvenda(){
 }
 
 void Relatorio(){
-	int op;
-	do{
-		Menurelatorio();
-		cin>>op;
-		
-		switch(op){
-			case 1:
-				int maiorQtd = 0;
-				string prodMaisVendido;
-				
-				for(int i = 0; i < qtdVenda; i++){
-					if(vendas[i].qtd > maiorQtd){
-						maiorQtd = vendas[i].qtd;
-						prodMaisVendido = vendas[i].produto;
-					}
-				}
-				cout<<"\nProduto mais Vendido: "<<prodMaisVendido;
-				cout<<"\nQuantidade: "<<maiorQtd<<endl;
-				break;
-			
-			case 2:
-				string vendMais;
-				float maiorTotal = 0;
-				
-				for(int i = 0; i < qtdVenda; i++){
-					if(vendas[i].total > maiorTotal){
-						maiorTotal = vendas[i].total;
-						vendMais = vendas[i].vendedor;
-					}
-				}	
-				cout<<"\nVendedor que mais vendeu: "<<vendMais;
-				cout<<"\nTotal vendido: R$"<<maiorTotal<<endl;
-				break;
-				
-			case 3:
-				float maiorVenda = 0;
-				int pos = 0;
-				
-				for(int i = 0; i < qtdVenda; i++){
-					if(vendas[i].total > maiorVenda){
-						maiorVenda = vendas[i].total;
-						pos = i;
-					}
-				}
-				cout<<"Maior venda: R$"<<maiorVenda<<endl;
-				cout<<"Cliente: "<<vendas[pos].cliente<<endl;
-				cout<<"Produto: "<<vendas[pos].produto<<endl;
-				break;
-				
-			case 4: 
-				float menorVenda = vendas[0].total;
-				int pos = 0;
-				
-				for(int i = 0; i < qtdVenda; i++){
-					if(vendas[i].total < menorVenda){
-						menorVenda = vendas[i].total;
-						pos = i;
-					}
-				}
-				cout<<"Menor venda: R$"<<menorVenda<<endl;
-				cout<<"Cliente: "<<vendas[pos].cliente<<endl;
-				cout<<"Produto: "<<vendas[pos].produto<<endl;
-				break;
-			
-			case 5:
-				float soma = 0;
-				
-				for(int i = 0; i < qtdVenda; i++){
-					soma += vendas[i].total;
-				}		
-				cout<<"\nTotal geral Vendido: "<<soma<<endl;
-				break;
-		}
-	}while(op!=6);
+    int op;
+
+    if(qtdVenda == 0){
+        cout << "\nNenhuma venda registrada!\n";
+        return;
+    }
+
+    do{
+        Menurelatorio();
+        cin >> op;
+
+        switch(op){
+
+            case 1: {
+                int maiorQtd = 0;
+                string prodMaisVendido = " ";
+
+                for(int i = 0; i < qtdVenda; i++){
+                    if(vendas[i].qtd > maiorQtd){
+                        maiorQtd = vendas[i].qtd;
+                        prodMaisVendido = vendas[i].produto;
+                    }
+                }
+
+                cout<<"\nProduto mais Vendido: "<<prodMaisVendido;
+                cout<<"\nQuantidade: "<<maiorQtd<<endl;
+                break;
+            }
+
+            case 2: {
+                string vendMais = " ";
+                float maiorTotal = 0;
+
+                for(int i = 0; i < qtdVenda; i++){
+                    if(vendas[i].total > maiorTotal){
+                        maiorTotal = vendas[i].total;
+                        vendMais = vendas[i].vendedor;
+                    }
+                }
+                cout<<"\nVendedor que mais vendeu: "<<vendMais;
+                cout<<"\nTotal vendido: R$"<<maiorTotal<<endl;
+                break;
+            }
+
+            case 3: {
+                float maiorVenda = 0;
+                int pos = 0;
+
+                for(int i = 0; i < qtdVenda; i++){
+                    if(vendas[i].total > maiorVenda){
+                        maiorVenda = vendas[i].total;
+                        pos = i;
+                    }
+                }
+                cout<<"Maior venda: R$"<<maiorVenda<<endl;
+                cout<<"Cliente: "<<vendas[pos].cliente<<endl;
+                cout<<"Produto: "<<vendas[pos].produto<<endl;
+                break;
+            }
+
+            case 4: {
+                float menorVenda = vendas[0].total;
+                int posMenor = 0;
+
+                for(int i = 0; i < qtdVenda; i++){
+                    if(vendas[i].total < menorVenda){
+                        menorVenda = vendas[i].total;
+                        posMenor = i;
+                    }
+                }
+                cout<<"Menor venda: R$"<<menorVenda<<endl;
+                cout<<"Cliente: "<<vendas[posMenor].cliente<<endl;
+                cout<<"Produto: "<<vendas[posMenor].produto<<endl;
+                break;
+            }
+
+            case 5: {
+                float soma = 0;
+
+                for(int i = 0; i < qtdVenda; i++){
+                    soma += vendas[i].total;
+                }
+                cout<<"\nTotal geral vendido: "<<soma<<endl;
+                break;
+            }
+
+            case 6:
+                cout<<"\nVoltando ao menu principal...\n";
+                break;
+
+            default:
+                cout<<"\nOpção inválida!\n";
+        }
+
+    }while(op != 6);
 }
 
 int main(){
