@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Locadora do Henry</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0a0f24;
+            color: white;
+            text-align: center;
+        }
+        header {
+            background: #162447;
+            padding: 20px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+        .card {
+            background: #1f4068;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #00d4ff;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            margin-top: 5px;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            border: none;
+            background: #00d4ff;
+            color: black;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #17e6ff;
+        }
+        .flex-row { display:flex; gap:12px; }
+        .flex-row .card { flex:1; }
+        .small { font-size:13px; color:#cfeffd; margin-top:6px; }
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            background: #162447;
+        }
+        .list { background:#0b2236; padding:10px; border-radius:6px; max-height:200px; overflow:auto; color:#dbefff }
+        .row-inline { display:flex; gap:8px; align-items:center; }
+    </style>
+</head>
+<body>
+
+<header>Locadora do Henry</header>
+
+<div class="container">
+
+    <!-- CADASTRAR CLIENTE -->
+    <div class="card">
+        <h2>Cadastrar Cliente</h2>
+
+        <label>Nome:</label>
+        <input id="cliNome" type="text" />
+
+        <label>CPF:</label>
+        <input id="cliCPF" type="text" />
+
+        <label>Idade:</label>
+        <input id="cliIdade" type="number" min="0" />
+
+        <div class="row-inline">
+            <button onclick="cadastrarCliente()">Cadastrar Cliente</button>
+            <div class="small" id="msgCliente"></div>
+        </div>
+    </div>
+
+    <!-- CADASTRAR ATENDENTE -->
+    <div class="card">
+        <h2>Cadastrar Atendente</h2>
+
+        <label>Nome:</label>
+        <input id="atNome" type="text" />
+
+        <label>CPF:</label>
+        <input id="atCPF" type="text" />
+
+        <div class="row-inline">
+            <button onclick="cadastrarAtendente()">Cadastrar Atendente</button>
+            <div class="small" id="msgAtendente"></div>
+        </div>
+    </div>
+
+    <!-- CADASTRAR FILME -->
+    <div class="card">
+        <h2>Cadastrar Filme</h2>
+
+        <label>Título:</label>
+        <input id="filmeTitulo" type="text" />
+
+        <label>Gênero:</label>
+        <input id="filmeGenero" type="text" />
+
+        <label>Ano:</label>
+        <input id="filmeAno" type="number" />
+
+        <label>Preço Locação (por dia):</label>
+        <input id="filmePreco" type="number" step="0.01" />
+
+        <div class="row-inline">
+            <button onclick="cadastrarFilme()">Cadastrar Filme</button>
+            <div class="small" id="msgFilme"></div>
+        </div>
+    </div>
+
+    <!-- REALIZAR LOCAÇÃO -->
+    <div class="card">
+        <h2>Realizar Locação</h2>
+
+        <label>Cliente (escolha):</label>
+        <select id="selCliente"></select>
+
+        <label>Atendente (escolha):</label>
+        <select id="selAtendente"></select>
+
+        <label>Filme (escolha):</label>
+        <select id="selFilme"></select>
+
+        <label>Dias de Locação:</label>
+        <input id="dias" type="number" min="1" value="1" />
+
+        <div class="row-inline">
+            <button onclick="realizarLocacao()">Alugar</button>
+            <div class="small" id="msgLocacao"></div>
+        </div>
+    </div>
+
+    <!-- LISTAGENS -->
+    <div class="card">
+        <h2>Listagens</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+                <div class="small">Clientes</div>
+                <div id="listaClientes" class="list"></div>
+            </div>
+            <div>
+                <div class="small">Atendentes</div>
+                <div id="listaAtendentes" class="list"></div>
+            </div>
+            <div style="grid-column:span 2">
+                <div class="small">Filmes</div>
+                <div id="listaFilmes" class="list"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>© 2025 Locadora do Henry</footer>
+
+<script>
+/* Estado simples em memória e localStorage */
+const KEY = 'locadora_henry_v2';
+let state = { clientes:[], atendentes:[], filmes:[], locacoes:[] };
+
+/* Helpers */
+const $ = id => document.getElementById(id);
+const money = v => 'R$ ' + Number(v).toFixed(2);
+
+/* Persistência */
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(state));
+  renderAll();
+}
+function load() {
+  const raw = localStorage.getItem(KEY);
+  if (raw) state = JSON.parse(raw);
+  renderAll();
+}
+
+/* Cadastro: Cliente */
+function cadastrarCliente(){
+  const nome = $('cliNome').value.trim();
+  const cpf = $('cliCPF').value.trim();
+  const idade = parseInt($('cliIdade').value,10);
+  if(!nome || !cpf || isNaN(idade)){ $('msgCliente').innerText = 'Preencha todos os campos corretamente.'; return; }
+  state.clientes.push({ nome, cpf, idade });
+  $('msgCliente').innerText = 'Cliente cadastrado!';
+  $('cliNome').value=''; $('cliCPF').value=''; $('cliIdade').value='';
+  save();
+  setTimeout(()=> $('msgCliente').innerText = '', 2500);
+}
+
+/* Cadastro: Atendente */
+function cadastrarAtendente(){
+  const nome = $('atNome').value.trim();
+  const cpf = $('atCPF').value.trim();
+  if(!nome || !cpf){ $('msgAtendente').innerText = 'Preencha todos os campos.'; return; }
+  state.atendentes.push({ nome, cpf });
+  $('msgAtendente').innerText = 'Atendente cadastrado!';
+  $('atNome').value=''; $('atCPF').value='';
+  save();
+  setTimeout(()=> $('msgAtendente').innerText = '', 2500);
+}
+
+/* Cadastro: Filme */
+function cadastrarFilme(){
+  const titulo = $('filmeTitulo').value.trim();
+  const genero = $('filmeGenero').value.trim();
+  const ano = parseInt($('filmeAno').value,10);
+  const preco = parseFloat($('filmePreco').value);
+  if(!titulo || !genero || isNaN(ano) || isNaN(preco)){ $('msgFilme').innerText = 'Preencha todos os campos corretamente.'; return; }
+  state.filmes.push({ titulo, genero, ano, precoLocacao: preco, estoque: 1 });
+  $('msgFilme').innerText = 'Filme cadastrado!';
+  $('filmeTitulo').value=''; $('filmeGenero').value=''; $('filmeAno').value=''; $('filmePreco').value='';
+  save();
+  setTimeout(()=> $('msgFilme').innerText = '', 2500);
+}
+
+/* Renderização das listas e selects */
+function renderAll(){
+  // selects
+  const selC = $('selCliente'); selC.innerHTML = '';
+  state.clientes.forEach((c,i)=> { const o = document.createElement('option'); o.value = i; o.text = c.nome; selC.add(o); });
+
+  const selA = $('selAtendente'); selA.innerHTML = '';
+  state.atendentes.forEach((a,i)=> { const o = document.createElement('option'); o.value = i; o.text = a.nome; selA.add(o); });
+
+  const selF = $('selFilme'); selF.innerHTML = '';
+  state.filmes.forEach((f,i)=> { const o = document.createElement('option'); o.value = i; o.text = f.titulo + ' (' + (f.estoque||0) + ' em estoque) - ' + money(f.precoLocacao); selF.add(o); });
+
+  // listas
+  const lc = $('listaClientes'); lc.innerHTML = '';
+  state.clientes.forEach(c => { const d = document.createElement('div'); d.innerText = c.nome + ' • CPF: ' + c.cpf + ' • ' + c.idade + ' anos'; lc.appendChild(d); });
+
+  const la = $('listaAtendentes'); la.innerHTML = '';
+  state.atendentes.forEach(a => { const d = document.createElement('div'); d.innerText = a.nome + ' • CPF: ' + a.cpf; la.appendChild(d); });
+
+  const lf = $('listaFilmes'); lf.innerHTML = '';
+  state.filmes.forEach((f,i) => { const d = document.createElement('div'); d.innerText = f.titulo + ' • ' + f.genero + ' • ' + f.ano + ' • ' + (f.estoque||0) + ' em estoque • ' + money(f.precoLocacao); lf.appendChild(d); });
+}
+
+function realizarLocacao(){
+  const ci = parseInt($('selCliente').value,10);
+  const ai = parseInt($('selAtendente').value,10);
+  const fi = parseInt($('selFilme').value,10);
+  const dias = parseInt($('dias').value,10) || 1;
+
+  if(isNaN(ci) || isNaN(ai) || isNaN(fi)){ $('msgLocacao').innerText = 'Selecione cliente, atendente e filme.'; return; }
+  if(!state.clientes[ci] || !state.atendentes[ai] || !state.filmes[fi]){ $('msgLocacao').innerText = 'Seleção inválida.'; return; }
+
+  const filme = state.filmes[fi];
+  if((filme.estoque || 0) <= 0){ $('msgLocacao').innerText = 'Estoque insuficiente!'; return; }
+
+  const total = filme.precoLocacao * dias;
+  state.locacoes.push({ cliente: state.clientes[ci].nome, atendente: state.atendentes[ai].nome, filme: filme.titulo, dias, total });
+
+  // diminuir estoque
+  filme.estoque = (filme.estoque||0) - 1;
+  $('msgLocacao').innerText = 'Locação realizada! ' + money(total);
+  save();
+  setTimeout(()=> $('msgLocacao').innerText = '', 3000);
+}
+
+/* Carregar ao iniciar */
+window.addEventListener('load', load);
+</script>
+
+</body>
+</html>
