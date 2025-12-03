@@ -6,16 +6,19 @@ using namespace std;
 
 struct Cliente{
    string nome;
-   string cpf;
-   string cep;
-   strig telefone;
    int idade;
-   string email;
-   string endereco;
+   string cpf;
    string sexo;
+   strig telefone;
+   string email;
+   string cep;
+   string pais;
+   string cidade;
+   string bairro;
+   
+  
+   
 };
-
-
 
 struct Produto{
    string nome;
@@ -46,10 +49,35 @@ void Menucadastros(){
 
 void Cadastrarcliente(){
     if(qtdCliente > 100){
-        cout<<"\nLimite de Cadastros de clientes atingidos!!"<<endl;
+        cout<<"\nLimite de Cadastros de clientes atingidos!!"<<endl;  
     }
 
-      
+        cout<<"\n=== Cadastro de Cliente ===\n";
+        cin.ignore();
+        cout<<"Nome: ";
+        getline(cin, clientes[qtdCliente].nome);
+        cout<<"Idade: ";
+        getline(cin, clientes[qtdCliente].idade);
+        cout<<"CPF: ";
+        getline(cin, clientes[qtdCliente].cpf);
+        cout<<"Sexo: ";
+        getline(cin, clientes[qtdCliente].sexo);
+        cout<<"Telefone: ";
+        getline(cin, clientes[qtdCliente].telefone);
+        cout<<"Email: ";
+        getline(cin, clientes[qtdCliente].email);
+        cout<<"CEP: ";
+        getline(cin, clientes[qtdCliente].cep);
+        cout<<"Pais: "
+        getline(cin, clientes[qtdCliente].pais);
+        cout<<"Cidade: ";
+        getline(cin, clientes[qtdCliente].cidade);
+        cout<<"Bairro: ";
+        getline(cin, clientes[qtdCliente].bairro);
+
+        qtdCliente ++;
+
+        cout<<"\nCadastro de Cliente concluido com êxito!!"<<endl;
 }
 
 
