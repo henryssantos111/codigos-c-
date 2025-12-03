@@ -80,7 +80,66 @@ void Cadastrarcliente(){
         cout<<"\nCadastro de Cliente concluido com êxito!!"<<endl;
 }
 
+void Listarcliente(){
+   if(qtdCliente == 0){
+      cout<<"\nSem Clientes para listar"<<endl;
+   }   
+
+      cout<<"\n=== Lista de Clientes ===\n";
+         for(int i = 0; i < qtdCliente; i++){
+            cout<<"\n"<<(i + 1)<<" Cliente"<<endl;
+            cout<<"Nome: "<<clientes[i].nome<<endl;
+            cout<<"Idade: "<<clientes[i].idade<<endl;
+            cout<<"CPF: "<<clientes[i].cpf<<endl;
+            cout<<"Sexo: "<<clientes[i].sexo<<endl;
+            cout<<"Telefone: "<<clientes[i].telefone<<endl;
+            cout<<"E-mail do cliente: "<<clientes[i].email<<endl;
+            cout<<"CEP - "<<clientes[i].cep<<endl;
+            cout<<"Pais - "<<clientes[i].pais<<endl;
+            cout<<"Cidade - "<<clientes[i].cidade<<endl;
+            cout<<"Bairro - "<<clientes[i].bairro<<endl;
+            cout<<"\n\n";
+         }
+}
+
+void Cadastrarproduto(){
+   if(qtdProduto > 100){
+      cout<<"\nLimite de Produtos atingidos!!"<<endl;
+   }   
+
+      cout>>"\n=== Cadastro de Produtos ===\n";
+      cin.ignore();
+      cout<<"Nome do Produto - ";
+      getline(cin, produtos[i].nome);
+      cout<<"Categoria: ";
+      getline(cin, produtos[i].categoria);
+      cout<<"Preço - R$";
+      cin>>produtos[i].preco<<endl;
+      cout<<"Quantidade: ";
+      cin>>produtos[i].qtdEstoque<<endl;
+
+      qtdProduto++;
+
+      cout<<"\nProduto cadastrado com sucesso!!"<<endl;
+}
+
+void Listarproduto(){
+   if(qtdProduto == 0){
+      cout<<"\nSem Produtos cadastrados!!"<<endl;
+   }   
+      cout<<"\n=== Lista de Clientes ===\n";
+      for(int i = 0; i < qtdProduto; i++){
+         cout<<"\n"<<(i + 1)<<" Produto"<<endl;
+         cout<<"Nome do Produto - "<<produtos[i].nome<<endl;
+         cout<<"Categoria: "<<produtos[i].categoria<<endl;
+         cout<<"Preço do Produto - "<<produtos[i].preco<<endl;
+         
+         
+      }   
+}
 
 int main(){
-
+   int op = 0;
+   
 }
+
