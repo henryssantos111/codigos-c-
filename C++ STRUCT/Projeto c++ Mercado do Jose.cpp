@@ -133,8 +133,7 @@ void Listarproduto(){
          cout<<"Nome do Produto - "<<produtos[i].nome<<endl;
          cout<<"Categoria: "<<produtos[i].categoria<<endl;
          cout<<"Preço do Produto - "<<produtos[i].preco<<endl;
-         
-         
+         cout<<"Quantidade: "<<produtos[i].qtdEstoque<<endl;
       }   
 }
 
@@ -142,4 +141,5 @@ int main(){
    int op = 0;
    
 }
+
 
